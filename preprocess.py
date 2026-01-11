@@ -4,45 +4,11 @@ import numpy as np
 import open_clip
 import torch
 from PIL import Image
+from utils import ClipEncoder
 
 
 # ==========================================
-# ① Feature Extractor (CLIPの責務)
-# ==========================================
-class ClipEncoder:
-    def __init__(self):
-        # 実行環境に合わせて最適なアクセラレータを選択
-        if torch.backends.mps.is_available():
-            self.device = "mps"
-        elif torch.cuda.is_available():
-            self.device = "cuda"
-        else:
-            self.device = "cpu"
-        print(f"Using device: {self.device}")
-
-        self.model, _, self.preprocess = open_clip.create_model_and_transforms(
-            "ViT-B-32", pretrained="laion2b_s34b_b79k"
-        )
-        self.model.to(self.device).eval()
-
-    def encode(self, image_path: Path):
-        """1枚の画像を512次元のベクトルに変換します"""
-        img = (
-            self.preprocess(Image.open(image_path).convert("RGB"))
-            .unsqueeze(0)
-            .to(self.device)
-        )
-
-        with torch.no_grad():
-            feat = self.model.encode_image(img)
-            # ベクトルを正規化（長さを1にする）して精度を安定させる
-            feat /= feat.norm(dim=-1, keepdim=True)
-
-        return feat.squeeze(0).cpu().numpy()
-
-
-# ==========================================
-# ② Dataset Builder (整理・変換の責務)
+# Dataset Builder (整理・変換の責務)
 # ==========================================
 def build_gakumasu_dataset(raw_dir: Path, encoder: ClipEncoder):
     """ディレクトリを巡回してデータセットを構築します"""
@@ -73,7 +39,7 @@ def build_gakumasu_dataset(raw_dir: Path, encoder: ClipEncoder):
 
 
 # ==========================================
-# ③ Orchestrator (実行・保存の責務)
+# Orchestrator (実行・保存の責務)
 # ==========================================
 if __name__ == "__main__":
     # パスの定義
