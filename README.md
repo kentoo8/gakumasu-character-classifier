@@ -22,7 +22,7 @@ pip install -r requirements.txt
 
 ### データの準備
 
-`data/raw/` 配下に分類したい名前のフォルダ（例: china, hiro, ume）を作成し、画像（.png形式）を格納します。
+`data/raw/` 配下に分類したい名前のフォルダ（例: china, hiro, ume）を作成し、画像（png or jpeg形式）を格納します。
 
 ### 前処理（特徴量抽出）
 
