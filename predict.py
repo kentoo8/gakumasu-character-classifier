@@ -50,7 +50,7 @@ def run_prediction(image_path: Path, model, encoder, class_names):
 
     print(
         f"Result: 【 {label: <8} 】 (Confidence: {confidence:6.2f}%) "
-        "| File: {image_path.name}"
+        f"| File: {image_path.name}"
     )
 
 
