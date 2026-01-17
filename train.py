@@ -76,14 +76,22 @@ if __name__ == "__main__":
     model = build_model(input_dim=x.shape[1], num_classes=len(class_names))
     model.summary()
 
+    # 早期終了: 検証データの損失が改善しなくなったら学習を打ち切る
+    early_stopping = keras.callbacks.EarlyStopping(
+        monitor="val_loss",
+        patience=5,
+        restore_best_weights=True,
+    )
+
     # 4. 学習
     print("\nStarting training...")
     model.fit(
         x_train,
         y_train,
-        epochs=50,
+        epochs=1000,
         batch_size=16,
         validation_data=(x_test, y_test),
+        callbacks=[early_stopping],
         verbose=1,
     )
 
