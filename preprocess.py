@@ -1,16 +1,14 @@
 from pathlib import Path
 
 import numpy as np
-import open_clip
-import torch
-from PIL import Image
 from utils import ClipEncoder
+from config import PROJECT_NAME
 
 
 # ==========================================
 # Dataset Builder (整理・変換の責務)
 # ==========================================
-def build_gakumasu_dataset(raw_dir: Path, encoder: ClipEncoder):
+def build_dataset(raw_dir: Path, encoder: ClipEncoder):
     """ディレクトリを巡回してデータセットを構築します"""
     # フォルダ名（アイドル名）を自動取得してソート
     # .startswith('.') を除外することで .DS_Store などを回避
@@ -46,14 +44,14 @@ if __name__ == "__main__":
     BASE_DIR = Path(__file__).resolve().parent
     RAW_DIR = BASE_DIR / "data" / "raw"
     PROCESSED_DIR = BASE_DIR / "data" / "processed"
-    OUTPUT_FILE = PROCESSED_DIR / "gakumasu_data.npz"
+    OUTPUT_FILE = PROCESSED_DIR / f"{PROJECT_NAME}_data.npz"
 
     # 保存先ディレクトリがなければ作成
     PROCESSED_DIR.mkdir(parents=True, exist_ok=True)
 
     # 変換開始
     encoder = ClipEncoder()
-    X, y, label_names = build_gakumasu_dataset(RAW_DIR, encoder)
+    X, y, label_names = build_dataset(RAW_DIR, encoder)
 
     # 保存
     if len(X) > 0:

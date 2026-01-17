@@ -12,6 +12,7 @@ warnings.filterwarnings("ignore", category=FutureWarning)
 
 import keras  # noqa: E402
 from keras import layers  # noqa: E402
+from config import PROJECT_NAME  # noqa: E402
 
 
 def load_data(data_path: Path):
@@ -60,8 +61,10 @@ def build_model(input_dim: int, num_classes: int):
 if __name__ == "__main__":
     # パスの設定
     BASE_DIR = Path(__file__).resolve().parent
-    DATA_PATH = BASE_DIR / "data" / "processed" / "gakumasu_data.npz"
-    MODEL_PATH = BASE_DIR / "data" / "processed" / "idol_model.keras"
+    PROCESSED_DIR = BASE_DIR / "data" / "processed"
+    DATA_PATH = PROCESSED_DIR / f"{PROJECT_NAME}_data.npz"
+    MODEL_PATH = PROCESSED_DIR / f"{PROJECT_NAME}_model.keras"
+
 
     # 1. データのロード
     x, y, class_names = load_data(DATA_PATH)

@@ -20,6 +20,10 @@ pip install -r requirements.txt
 
 ## 使い方
 
+### 設定のカスタマイズ（任意）
+
+`config.py` ファイル内の `PROJECT_NAME` を変更することで、生成されるデータセットやモデルのファイル名をカスタマイズできます。
+
 ### データの準備
 
 `data/raw/` 配下に分類したい名前のフォルダ（例: china, hiro, ume）を作成し、画像（png or jpeg形式）を格納します。
@@ -55,8 +59,9 @@ python predict.py
 ├── .my_venv/          # Python仮想環境
 ├── data/
 │   ├── raw/           # [入力] クラス名（アイドル名等）のフォルダに画像を格納
-│   └── processed/     # [出力] 特徴量データ(npz)と学習済みモデル(keras)
+│   └── processed/     # [出力] 特徴量データ({PROJECT_NAME}_data.npz)と学習済みモデル({PROJECT_NAME}_model.keras)
 ├── test_images/       # [任意] 推論させたい未知画像を格納
+├── config.py          # プロジェクト全体の各種設定
 ├── utils.py           # CLIPエンコーダー（共通モジュール）
 ├── preprocess.py      # 画像のベクトル化とデータセット作成
 ├── train.py           # モデルの学習と保存

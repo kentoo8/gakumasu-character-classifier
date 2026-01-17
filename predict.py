@@ -4,6 +4,7 @@ from pathlib import Path
 
 import numpy as np
 from utils import ClipEncoder
+from config import PROJECT_NAME
 
 # KerasバックエンドをPyTorchに固定 (MPS/GPUアクセラレーション有効化)
 os.environ["KERAS_BACKEND"] = "torch"
@@ -57,8 +58,9 @@ def run_prediction(image_path: Path, model, encoder, class_names):
 if __name__ == "__main__":
     # パス設定
     BASE_DIR = Path(__file__).resolve().parent
-    MODEL_PATH = BASE_DIR / "data" / "processed" / "idol_model.keras"
-    DATA_PATH = BASE_DIR / "data" / "processed" / "gakumasu_data.npz"
+    PROCESSED_DIR = BASE_DIR / "data" / "processed"
+    MODEL_PATH = PROCESSED_DIR / f"{PROJECT_NAME}_model.keras"
+    DATA_PATH = PROCESSED_DIR / f"{PROJECT_NAME}_data.npz"
     TEST_DIR = BASE_DIR / "test_images"
 
     # 1. 準備（モデル、エンコーダーの初期化）
@@ -85,7 +87,7 @@ if __name__ == "__main__":
 
     # 3. 順次判定
     print(f"\n{'=' * 60}")
-    print(f"  学マスアイドル判定 (Total: {len(test_files)} images)")
+    print(f"  {PROJECT_NAME} Classification Result (Total: {len(test_files)} images)")
     print(f"{'=' * 60}")
 
     for img_path in sorted(test_files):
